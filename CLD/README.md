@@ -17,10 +17,20 @@
 
 下面将会逐一列出这4个核心功能的核心逻辑。
 
-#### Init
+#### init
 
-#### Generate
+TODO: 待补充
 
-#### Monitor
+#### generate
+
+TODO: 待补充
+
+#### start monitor
+
+TODO: 待补充
+
+#### stop monitor
+
+TODO: 待补充
 
 
