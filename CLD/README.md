@@ -182,12 +182,13 @@ flutter_project_root_dir
 ├── path
 │   ├── to
 │   │   ├── fonts // 字体资源目录
-│   │   │   ├── font_family_name // 某个字体的家族名称
-│   │   │   │   ├── font_family_name-Regular.ttf
-│   │   │   │   ├── font_family_name-Bold.ttf
+│   │   │   ├── #{font_family_name} // 某个字体的家族名称
+│   │   │   │   ├── #{font_family_name}-#{font_weight_or_style}.ttf
 │   │   │   ├── Amiri
 │   │   │   │   ├── Amiri-Regular.ttf
 │   │   │   │   ├── Amiri-Bold.ttf
+│   │   │   │   ├── Amiri-Italic.ttf
+│   │   │   │   ├── Amiri-BoldItalic.ttf
 │   ├── ..
 ```
 
