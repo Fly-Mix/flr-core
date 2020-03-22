@@ -14,7 +14,7 @@ Flr 核心逻辑的版本号遵守[语义化版本semver 2.0](http://semver.org/
 
 Flr 的相关文档列表如下：
 
-- [核心逻辑文档](./CoreLogicDocs/README.md)
+- [核心逻辑文档](./CLD/README.md)
 - [产品需求文档](./PRD/README.md)
 
 
