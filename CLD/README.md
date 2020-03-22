@@ -523,13 +523,24 @@ flutter_project_root_dir
 
 #### start monitor
 
-1. 执行一次`flr generate`操作；
-2. 从`pubspec.yaml`读取`legal_resource_dir`数组。
+1. 进行环境检测；若发现不合法的环境，则抛出异常，终止当前进程：
+
+   - 检测当前flutter工程根目录是否存在`pubspec.yaml`。
+
+   - 检测当前`pubspec.yaml中`是否存在`flr_conig`。
+
+   - 检测当前`flr_config`中的`resource_dir`配置是否合法：
+
+      判断合法的标准是：`assets`配置或者`fonts`配置了至少1个`legal_resource_dir`。
+
+2. 执行一次`flr generate`操作；
+
 3. 获取`legal_resource_dir`数组：
 
    - 从`flr_config`中的`assets`配置获取`assets_legal_resource_dir`数组；
    - 从`flr_config`中的`fonts`配置获取`fonts_legal_resource_dir`数组；
    - 合并`assets_legal_resource_dir`数组和`fonts_legal_resource_dir`数组为`legal_resource_dir`数组。
+
 4. 启动资源变化监控服务；
    - 启动一个文件监控服务，对`legal_resource_dir`数组中的资源目录进行文件监控
    - 若服务检测到资源变化（资源目录下的发生增/删/改文件），则执行一次`flr generate`操作
