@@ -226,6 +226,11 @@ flutter_project_root_dir
            ref: 0.1.1
        ```
 
+1. 对Flutter配置进行修正，以避免执行获取依赖操作时会失败：
+
+    - 检测Flutter配置中的`assets`选项是否是一个非空数组；若不是，则删除`assets`选项；
+    - 检测Flutter配置中的`fonts`选项是否是一个非空数组；若不是，则删除`fonts`选项。
+
 1. 调用flutter工具，为flutter工程获取依赖。
 
 #### generate
