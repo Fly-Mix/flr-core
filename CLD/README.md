@@ -282,7 +282,6 @@ flutter_project_root_dir
 6. 扫描`fonts_legal_resource_dir`数组中的`legal_resource_dir`，输出`font_family_config`数组、`illegal_font_file`数组；：
 
    - 创建`font_family_config`数组、`illegal_font_file`数组；
-
    - 遍历`fonts_legal_resource_dir`数组，按照如下处理每个资源目录：
       - 扫描当前资源目录，获得其第1级子目录数组，并按照字典顺序对数组做升序排列（一般使用开发语言提供的默认的sort算法即可）；
       - 遍历第1级子目录数组，按照如下处理每个子目录：
@@ -290,8 +289,10 @@ flutter_project_root_dir
          - 扫描当前子目录和其所有子目录，查找所有`font_file`；
          - 根据`legal_resource_file`的标准，筛选查找结果生成`legal_font_file`数组和`illegal_font_file`子数组；`illegal_font_file`子数组合并到`illegal_font_file`数组；
          - 据`font_asset`的定义，遍历`legal_font_file`数组，生成`font_asset_config`数组；
+         - 按照字典顺序对生成font_asset_config数组做升序排列（比较asset的值）；
          - 根据`font_family_config`的定义，为当前子目录组织`font_family_name`和`font_asset_config`数组生成`font_family_config`对象，添加到`font_family_config`子数组；`font_family_config`子数组合并到`font_family_config`数组。
-   - 输出`font_family_config`数组、`illegal_font_file`数组。
+   - 输出`font_family_config`数组、`illegal_font_file`数组；
+   - 按照字典顺序对font_family_config数组做升序排列（比较family的值）。
 
 7. 检测是否存在`illegal_resource_file`：
 
