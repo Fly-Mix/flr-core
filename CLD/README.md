@@ -61,20 +61,20 @@
    ```yaml
    flr:
      core_version: 1.0.0
-     assets:
-     fonts:
+     assets: []
+     fonts: []
    ```
 
    -  `core_version`:  值为当前`Flr`工具选择实现的核心逻辑版本（`CoreLogic version`），由`Flr`初始化时自动填写
 
-   - `assets`：值为需要`Flr`扫描图片资源和文本资源的`resource_dir`数组，由用户在初始化结束后填写，如：
+   - `assets`：值为需要`Flr`扫描图片资源和文本资源的`resource_dir`数组，初始值为空数组`[]`；初始化完毕后，新值由用户填写，如：
 
      ```yaml
      - lib/assets/images
      - lib/assets/texts
      ```
 
-   - `fonts`：值为需要`Flr`扫描字体资源的`resource_dir`数组，由用户在初始化结束后填写，如：
+   - `fonts`：值为需要`Flr`扫描字体资源的`resource_dir`数组，初始值为空数组`[]`；初始化完毕后，新值由用户填写，如：
 
       ```yaml
       - lib/assets/fonts
@@ -279,7 +279,7 @@ flutter_project_root_dir
    - 按照字典顺序对`text_asset`数组做升序排列（一般使用开发语言提供的默认的sort算法即可）；
    - 输出`text_asset`数组和`illegal_image_file`数组。
 
-6. 扫描`fonts_legal_resource_dir`数组中的`legal_resource_dir`，输出`font_family_config`数组、`illegal_font_file`数组；：
+6. 扫描`fonts_legal_resource_dir`数组中的`legal_resource_dir`，输出`font_family_config`数组、`illegal_font_file`数组：
 
    - 创建`font_family_config`数组、`illegal_font_file`数组；
    - 遍历`fonts_legal_resource_dir`数组，按照如下处理每个资源目录：
