@@ -350,7 +350,7 @@ flutter_project_root_dir
       static const text = _R_Text();
       
       /// This `R.fontFamily` struct is generated, and contains static references to static font resources.
-      static const fontFamily = _R_Font_Family();
+      static const fontFamily = _R_FontFamily();
     }
     ```
 
@@ -509,10 +509,10 @@ flutter_project_root_dir
     - `#{font_family_comment}`：字体家族变量的文档注释；其定义为`font family: #{font_family_name}`
 
     ```dart
-    /// This `_R_Font_Family` class is generated and contains references to static font resources.
+    /// This `_R_FontFamily` class is generated and contains references to static font resources.
     // ignore: camel_case_types
-    class _R_Font_Family {
-      const _R_Font_Family();
+    class _R_FontFamily {
+      const _R_FontFamily();
       
       /// #{font_family_comment}
       // ignore: non_constant_identifier_names
