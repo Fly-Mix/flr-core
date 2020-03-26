@@ -61,20 +61,23 @@
    ```yaml
    flr:
      core_version: 1.0.0
+     dartfmt-line-length: 80
      assets: []
      fonts: []
    ```
 
-   -  `core_version`:  值为当前`Flr`工具选择实现的核心逻辑版本（`CoreLogic version`），由`Flr`初始化时自动填写
+   -  `core_version`:  用于存放`Flr`工具实现的核心逻辑版本（`CoreLogic version`），初始值由`Flr`工具执行初始化时自动填写
 
-   - `assets`：值为需要`Flr`扫描图片资源和文本资源的`resource_dir`数组，初始值为空数组`[]`；初始化完毕后，新值由用户填写，如：
+   -  `dartfmt-line-length`：用于存放`Flr`的CLI版本工具对`r.g.dart`进行格式化时的行长，初始值为：80（dartfmt工具的默认值）；后期用户可根据团队需要进行手动修改
+
+   - `assets`：用于配置需要`Flr`扫描图片资源和文本资源的`resource_dir`数组，初始值为空数组`[]`；初始化完毕后，新值由用户填写，如：
 
      ```yaml
      - lib/assets/images
      - lib/assets/texts
      ```
 
-   - `fonts`：值为需要`Flr`扫描字体资源的`resource_dir`数组，初始值为空数组`[]`；初始化完毕后，新值由用户填写，如：
+   - `fonts`：用于配置需要`Flr`扫描字体资源的`resource_dir`数组，初始值为空数组`[]`；初始化完毕后，新值由用户填写，如：
 
       ```yaml
       - lib/assets/fonts
