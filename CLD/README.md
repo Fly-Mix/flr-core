@@ -137,9 +137,11 @@ flutter_project_root_dir
 │   ├── assets // 资源总目录
 │   │   ├── images // 图片资源总目录
 │   │   │   ├── test.png
+│   │   │   ├── testSVG.svg
 │   │   │   ├── 2.0x
 │   │   │   │   ├── test.png
-│   │   │   │   └── test.png
+│   │   │   ├── 3.0x
+│   │   │   │   ├── test.png
 │   │   ├── texts // 文本资源总目录
 │   │   │   └── test.json
 │   │   │   └── test.yaml
@@ -160,14 +162,18 @@ flutter_project_root_dir
 │   ├── to
 │   │   ├── moduleA_images // 模块A的图片资源总目录
 │   │   │   ├── testA.png
+│   │   │   ├── testASVG.svg
 │   │   │   ├── 2.0x
 │   │   │   │   ├── testA.png
-│   │   │   │   └── testA.png
+│   │   │   ├── 3.0x
+│   │   │   │   ├── testA.png
 │   │   ├── moduleB_images // 模块B的图片资源总目录
 │   │   │   ├── testB.png
+│   │   │   ├── testBSVG.svg
 │   │   │   ├── 2.0x
 │   │   │   │   ├── testB.png
-│   │   │   │   └── testB.png
+│   │   │   ├── 3.0x
+│   │   │   │   ├── testB.png
 │   │   ├── texts // 文本资源总目录
 │   │   │   └── test.json
 │   │   │   └── test.yaml
@@ -184,7 +190,7 @@ flutter_project_root_dir
 │   ├── ..
 ├── path
 │   ├── to
-│   │   ├── fonts // 字体资源目录
+│   │   ├── fonts // 字体资源总目录
 │   │   │   ├── #{font_family_name} // 某个字体的家族名称
 │   │   │   │   ├── #{font_family_name}-#{font_weight_or_style}.ttf
 │   │   │   ├── Amiri
