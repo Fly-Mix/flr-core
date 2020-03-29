@@ -17,11 +17,23 @@
 
 
 
-## ❇️PR-1：增加字体资源的支持
+## PR-1：增加字体资源的支持
+
+> Flr各版本完成情况
+>
+> - flr-cli ✅
+> - flr-as-plugin ✅
+> - flr-vscode-extension 
 
 需要按照`核心逻辑v1.0.0`的版本要求，增加字体资源的支持。
 
-## ❇️PR-2：更改 Flr 配置的版本信息和检测逻辑
+## PR-2：更改 Flr 配置的版本信息和检测逻辑
+
+> Flr各版本完成情况
+>
+> - flr-cli ✅
+> - flr-as-plugin ✅
+> - flr-vscode-extension 
 
 需要按照`核心逻辑v1.0.0`的版本要求，修改`Flr`配置的版本信息和检测逻辑。相关需求信息简略参考如下：
 
@@ -56,7 +68,13 @@
 3. 版本信息一致性的检测逻辑由‘“检测工具版本一致性”改为“检测工具的核心逻辑版本一致性”
 
 
-## ❇️PR-3：统一 r.g.dart 生成的内容
+## PR-3：统一 r.g.dart 生成的内容
+
+> Flr各版本完成情况
+>
+> - flr-cli ✅
+> - flr-as-plugin ✅
+> - flr-vscode-extension 
 
 需要按照`核心逻辑v1.0.0`的版本要求，统一`r.g.dart`生成的内容。其中，至少需要统一头部注释和头文件。
 
@@ -89,7 +107,13 @@
    import 'package:r_dart_library/asset_svg.dart';
    ```
 
-## ❇️PR-4：统一资源声明的顺序
+## PR-4：统一资源声明的顺序
+
+> Flr各版本完成情况
+>
+> - flr-cli ✅
+> - flr-as-plugin ✅
+> - flr-vscode-extension 
 
 需要按照`核心逻辑v1.0.0`的版本要求，统一`r.g.dart`生成的内容。相关需求信息简略参考如下：
 
@@ -97,7 +121,7 @@
 - “资源的声明数组”按照按照字典顺序升序排列（一般使用开发语言提供的默认的sort算法即可）
 
 
-## ❇️PR-5：统一 pubspec.yaml 的缩进
+## PR-5：统一 pubspec.yaml 的缩进
 
 统一设置缩进为2个空格。
 
