@@ -565,4 +565,8 @@ flutter_project_root_dir
 
 1. 停止资源变化监控服务
 
+## Flr 测试用例
 
+测试用例思维图：[《flr-use-case.xmind》](./assets/flr-use-case.xmind)
+
+![flr-use-case](./assets/flr-use-case.svg)
