@@ -46,8 +46,13 @@
 #### 合法性
 
 1. `legal_resource_file`: the `file_basename_no_extension` of  `resource_file` is made up of  letters (`a-z`, `A-Z`), numbers (`0-9`) and other legal characters (`_`, `+`, `-`, `.`, `·`, `!`, `@`, `&`, `$`, `￥`) .
+
+   > You can use this regex: `^[a-zA-Z0-9_\+\-\.·!@&$￥]+$`
+
 2. `illegal_resource_file`: bad `legal_resource_file` .
+
 3. `legal_resource_dir`: the `resource_dir` does exist in flutter project.
+
 4. `illegal_resource_dir`: bad `legal_resource_dir` .
 
 #### 一致性
