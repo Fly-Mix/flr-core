@@ -187,7 +187,7 @@ flutter_project_root_dir
 
 #### Flr强制的字体资源目录组织结构
 
-为了让`Flr`能正确完成字体资源的扫描、声明、代码生成的操作，flutter开发者必须按照以下组织结构存放文本资源：
+为了让`Flr`能正确完成字体资源的扫描、声明、代码生成的操作，flutter开发者必须按照以下组织结构存放字体资源：
 
 ```
 flutter_project_root_dir
