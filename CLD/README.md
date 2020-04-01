@@ -137,22 +137,35 @@ flutter开发者在flutter工程应该（SHOULD）按照以下建议组织整体
 ```
 flutter_project_root_dir
 ├── build
-│   ├── ..
+│   ├── ..
 ├── lib
-│   ├── assets // 资源总目录
-│   │   ├── images // 图片资源总目录
-│   │   │   ├── test.png
-│   │   │   ├── testSVG.svg
-│   │   │   ├── 2.0x
-│   │   │   │   ├── test.png
-│   │   │   ├── 3.0x
-│   │   │   │   ├── test.png
-│   │   ├── texts // 文本资源总目录
-│   │   │   └── test.json
-│   │   │   └── test.yaml
-│   │   ├── fonts // 字体资源总目录
-│   ├── main.dart
-│   ├── ..
+│   ├── assets
+│   │   ├── #{module}-images // 某个模块的图片资源总目录
+│   │   │   ├── #{main_image_asset}
+│   │   │   ├── #{variant-dir} // 某个变体版本的图片资源总目录
+│   │   │   │   ├── #{image_asset_variant}
+│   │   │   │
+│   │   ├── home-images // home模块的图片资源总目录
+│   │   │   ├── home_icon.png
+│   │   │   ├── home_badge.svg
+│   │   │   ├── 3.0x // 3.0倍分辨率版本的图片资源总目录
+│   │   │   │   ├── home_icon.png
+│   │   │   │
+│   │   ├── texts // 文本资源总目录
+│   │   │   │     // （你也可以根据模块进一步细分）
+│   │   │   └── test.json
+│   │   │   └── test.yaml
+│   │   │   │
+│   │   ├── fonts // 所有字体家族的字体资源总目录
+│   │   │   ├── #{font-family} // 某个字体家族的字体资源总目录
+│   │   │   │   ├── #{font-family}-#{font_weight_or_style}.ttf
+│   │   │   │
+│   │   │   ├── Amiri // Amiri字体家族的字体资源总目录
+│   │   │   │   ├── Amiri-Regular.ttf
+│   │   │   │   ├── Amiri-Bold.ttf
+│   │   │   │   ├── Amiri-Italic.ttf
+│   │   │   │   ├── Amiri-BoldItalic.ttf
+│   ├── ..
 ```
 
 #### Flr推荐的图片资源和文本资源目录组织结构
@@ -162,27 +175,26 @@ flutter开发者在flutter工程应该（SHOULD）按照以下建议组织结构
 ```
 flutter_project_root_dir
 ├── build
-│   ├── ..
+│   ├── ..
 ├── path
-│   ├── to
-│   │   ├── moduleA-images // 模块A的图片资源总目录
-│   │   │   ├── testA.png
-│   │   │   ├── testASVG.svg
-│   │   │   ├── 2.0x
-│   │   │   │   ├── testA.png
-│   │   │   ├── 3.0x
-│   │   │   │   ├── testA.png
-│   │   ├── moduleB-images // 模块B的图片资源总目录
-│   │   │   ├── testB.png
-│   │   │   ├── testBSVG.svg
-│   │   │   ├── 2.0x
-│   │   │   │   ├── testB.png
-│   │   │   ├── 3.0x
-│   │   │   │   ├── testB.png
-│   │   ├── texts // 文本资源总目录
-│   │   │   └── test.json
-│   │   │   └── test.yaml
-│   ├── ..
+│   ├── to
+│   │   ├── user-images // user模块的图片资源总目录
+│   │   │   ├── user_icon.png
+│   │   │   ├── user_badge.svg
+│   │   │   ├── 3.0x // 3.0倍分辨率版本的图片资源总目录
+│   │   │   │   ├── user_icon.png
+│   │   │   │
+│   │   ├── home-images // home模块的图片资源根目录
+│   │   │   ├── home_icon.png
+│   │   │   ├── home_badge.svg
+│   │   │   ├── 3.0x // 3.0倍分辨率版本的图片资源总目录
+│   │   │   │   ├── home_icon.png
+│   │   │   │
+│   │   ├── texts // 文本资源总目录
+│   │   │   │     // （你也可以根据模块进一步细分）
+│   │   │   └── test.json
+│   │   │   └── test.yaml
+│   │   │   │
 ```
 
 #### Flr强制的字体资源目录组织结构
@@ -195,14 +207,15 @@ flutter_project_root_dir
 │   ├── ..
 ├── path
 │   ├── to
-│   │   ├── fonts // 字体资源总目录
-│   │   │   ├── #{font-family} // 某个字体家族的字体资源目录
-│   │   │   │   ├── #{font-family}-#{font_weight_or_style}.ttf
-│   │   │   ├── Amiri // Amiri字体家族的字体资源目录
-│   │   │   │   ├── Amiri-Regular.ttf
-│   │   │   │   ├── Amiri-Bold.ttf
-│   │   │   │   ├── Amiri-Italic.ttf
-│   │   │   │   ├── Amiri-BoldItalic.ttf
+│   │   ├── fonts // 所有字体家族的字体资源总目录
+│   │   │   ├── #{font-family} // 某个字体家族的字体资源总目录
+│   │   │   │   ├── #{font-family}-#{font_weight_or_style}.ttf
+│   │   │   │
+│   │   │   ├── Amiri // Amiri字体家族的字体资源总目录
+│   │   │   │   ├── Amiri-Regular.ttf
+│   │   │   │   ├── Amiri-Bold.ttf
+│   │   │   │   ├── Amiri-Italic.ttf
+│   │   │   │   ├── Amiri-BoldItalic.ttf
 │   ├── ..
 ```
 
