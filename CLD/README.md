@@ -165,14 +165,14 @@ flutter_project_root_dir
 │   ├── ..
 ├── path
 │   ├── to
-│   │   ├── moduleA_images // 模块A的图片资源总目录
+│   │   ├── moduleA-images // 模块A的图片资源总目录
 │   │   │   ├── testA.png
 │   │   │   ├── testASVG.svg
 │   │   │   ├── 2.0x
 │   │   │   │   ├── testA.png
 │   │   │   ├── 3.0x
 │   │   │   │   ├── testA.png
-│   │   ├── moduleB_images // 模块B的图片资源总目录
+│   │   ├── moduleB-images // 模块B的图片资源总目录
 │   │   │   ├── testB.png
 │   │   │   ├── testBSVG.svg
 │   │   │   ├── 2.0x
@@ -196,9 +196,9 @@ flutter_project_root_dir
 ├── path
 │   ├── to
 │   │   ├── fonts // 字体资源总目录
-│   │   │   ├── #{font_family_name} // 某个字体的家族名称
-│   │   │   │   ├── #{font_family_name}-#{font_weight_or_style}.ttf
-│   │   │   ├── Amiri
+│   │   │   ├── #{font-family} // 某个字体家族的字体资源目录
+│   │   │   │   ├── #{font-family}-#{font_weight_or_style}.ttf
+│   │   │   ├── Amiri // Amiri字体家族的字体资源目录
 │   │   │   │   ├── Amiri-Regular.ttf
 │   │   │   │   ├── Amiri-Bold.ttf
 │   │   │   │   ├── Amiri-Italic.ttf
