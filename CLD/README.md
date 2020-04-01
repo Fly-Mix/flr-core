@@ -287,8 +287,12 @@ flutter_project_root_dir
    - 创建`image_asset`数组、`illegal_image_file`数组；
 
    - 遍历`assets_legal_resource_dir`数组，按照如下处理每个资源目录：
-      - 扫描当前资源目录和其第1级的子目录，查找所有`image_file`；
+      - 扫描当前资源目录和其所有层级的子目录，查找所有`image_file`；
+      
+         > 其实最好是扫描当前资源目录和其第1级的子目录；然而为了最大程序兼容到不标准的图片资源目录组织结构，所以扫描当前资源目录和其所有层级的子目录
+      
       - 根据`legal_resource_file`的标准，筛选查找结果生成`legal_image_file`子数组和`illegal_image_file`子数组；`illegal_image_file`子数组合并到`illegal_image_file`数组；
+      
       - 根据`image_asset`的定义，遍历`legal_image_file`子数组，生成`image_asset`子数；组；`image_asset`子数组合并到`image_asset`数组。
    - 对`image_asset`数组做去重处理；
    - 按照字典顺序对`image_asset`数组做升序排列（一般使用开发语言提供的默认的sort算法即可）；
