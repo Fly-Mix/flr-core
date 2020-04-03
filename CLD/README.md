@@ -65,7 +65,7 @@
 
    ```yaml
    flr:
-     core_version: 1.0.0
+     core_version: 2.0.0
      dartfmt_line_length: 80
      assets: []
      fonts: []
@@ -124,7 +124,200 @@
    asset: packages/flutter_r_demo/assets/fonts/Amiri/Amiri-Regular.ttf
    ```
 
-   
+
+
+
+## Flutter 中的`main asset`和`asset variant`
+
+Flutter官方是通过一种名为`asset variant`（资产变体）的机制，达到在不同的环境或者上下文中可根据同一个资产声明即可加载适合当前环境或者上下文的资源的目的。具体可看官方关于`asset variant`的描述文档[《Asset Variants》](https://flutter.cn/docs/development/ui/assets-and-images#asset-variants)。
+
+`main asset`相对于`asset variant`而言的，简单来说，它可视为一个资产资源的默认选择项。
+
+**需要特别注意的是：截止目前，Flutter官方只支持图片倍率变体。**也就是说一个图片资产，可以关联一个默认的图片资源文件和不同倍数分辨率的图片资源文件。（你期待的关联黑暗模式的图片资源文件，则需要静待官方支持了）
+
+那么如何判断应用程序目录里的一个资源文件是`main asset`还是`asset variant`呢？
+
+截止目前，可以使用以下算法判断其是不是`asset variant`：
+
+1. 获取资源文件的父目录
+
+2. 判断父目录是否符合资产变体目录的特征
+
+   截止目前，资产变体目录的特征类型有：
+
+   - 倍率变体目录特征：`^[0-9]*\.?[0-9]+[x]$`，比如`2x`、`2.0x`。
+
+      **注意**：倍率变体只适用于非 SVG类的图片资源文件
+
+## Flr的算法（ruby版本）
+
+#### 判断资源文件是不是`asset variant`
+
+```ruby
+def self.is_asset_variant?(legal_resource_file)
+
+  if FileUtil.is_non_svg_image_resource_file?(legal_resource_file)
+    dirname = File.dirname(legal_resource_file)
+    parent_dir_name = File.basename(dirname)
+
+    ratio_regx = /^[0-9]*\.?[0-9]+[x]$/
+    if parent_dir_name =~ ratio_regx
+      return true
+    end
+  end
+
+  return false
+end
+```
+
+## 为资源文件生成`main asset`
+
+```ruby
+# generate_main_asset(legal_resource_file, package_name) -> main_asset
+#
+# 为当前资源文件生成 main_asset
+#
+# === Examples
+# === Example-1
+# legal_resource_file = "lib/assets/images/test.png"
+# package_name = "flutter_r_demo"
+# main_asset = "packages/flutter_r_demo/assets/images/test.png"
+#
+# === Example-2
+# legal_resource_file = "lib/assets/images/3.0x/test.png"
+# package_name = "flutter_r_demo"
+# main_asset = "packages/flutter_r_demo/assets/images/test.png"
+#
+# === Example-3
+# legal_resource_file = "lib/assets/texts/3.0x/test.json"
+# package_name = "flutter_r_demo"
+# main_asset = "packages/flutter_r_demo/assets/texts/3.0x/test.json"
+#
+# === Example-3
+# legal_resource_file = "lib/assets/fonts/Amiri/Amiri-Regular.ttf"
+# package_name = "flutter_r_demo"
+# main_asset = "packages/flutter_r_demo/fonts/Amiri/Amiri-Regular.ttf"
+#
+def self.generate_main_asset(legal_resource_file, package_name)
+  main_asset_mapping_file = legal_resource_file
+
+  if is_asset_variant?(legal_resource_file)
+    file_basename = File.basename(legal_resource_file)
+    dirname = File.dirname(legal_resource_file)
+    main_asset_mapping_file_dirname = File.dirname(dirname)
+
+    main_asset_mapping_file = "#{main_asset_mapping_file_dirname}/#{file_basename}"
+  end
+
+  implied_resource_file = main_asset_mapping_file
+  if implied_resource_file.include?("lib/")
+    implied_resource_file = implied_resource_file.split("lib/")[1]
+  end
+  main_asset = "packages/#{package_name}/#{implied_resource_file}"
+
+  return main_asset
+end
+```
+
+#### 为`asset`生成`asset_id`
+
+```ruby
+# === Examples
+#
+# ===== Example-1
+# asset = "packages/flutter_r_demo/assets/images/test.png"
+# asset = "packages/flutter_r_demo/assets/images/test.jpg"
+# used_asset_id_array = []
+# prior_asset_type = ".png"
+# asset_id = "test"
+#
+# ===== Example-2
+# asset = "packages/flutter_r_demo/assets/images/test.jpg"
+# used_asset_id_array = [test]
+# prior_asset_type = ".png"
+# asset_id = "test_jpg"
+#
+# ===== Example-3
+# asset = "packages/flutter_r_demo/assets/home-images/test.jpg"
+# used_asset_id_array = [test, test_jpg]
+# prior_asset_type = ".png"
+# asset_id = "test_jpg_1"
+#
+# ===== Example-4
+# asset = "packages/flutter_r_demo/assets/texts/test.json"
+# used_asset_id_array = []
+# prior_asset_type = ".*"
+# asset_id = "test_json"
+#
+def self.generate_asset_id(asset, used_asset_id_array, prior_asset_type = ".*")
+  file_extname = File.extname(asset).downcase
+
+  dirname = File.dirname(asset)
+  parent_dir_name = File.basename(dirname)
+  file_basename = File.basename(asset)
+
+  file_basename_no_extension = File.basename(asset, ".*")
+  asset_id = file_basename_no_extension.dup
+  if prior_asset_type.eql?(".*") or file_extname.eql?(prior_asset_type) == false
+    ext_info = file_extname
+    ext_info[0] = "_"
+    asset_id = asset_id + ext_info
+  end
+
+  # 处理非法字符
+  asset_id = asset_id.gsub(/[^a-zA-Z0-9_$]/, "_")
+
+  # 首字母转化为小写
+  capital = asset_id[0].downcase
+  asset_id[0] = capital
+
+  # 处理首字符异常情况
+  if capital =~ /[0-9_$]/
+    asset_id = "a" + asset_id
+  end
+
+  # 处理 asset_id 重名的情况
+  if used_asset_id_array.include?(asset_id)
+    # 当前asset_id重名次数，初始值为1
+    repeat_count = 1
+
+    # 查找当前asset_id衍生出来的asset_id_brother（id兄弟）
+    # asset_id_brother = #{asset_id}$#{repeat_count}
+    # 其中，repeat_count >= 1
+    #
+    # Example：
+    # asset_id = test
+    # asset_id_brother = test$1
+    #
+    id_brother_regx = /^#{asset_id}\$[1-9][0-9]*$/
+    cur_asset_id_brothers = used_asset_id_array.select{ |id| id =~ id_brother_regx }
+
+    repeat_count += cur_asset_id_brothers.size
+    asset_id = "#{asset_id}$#{repeat_count}"
+  end
+
+  return asset_id
+end
+```
+
+> - Q：处理 asset_id 重名时，为什么使用`$`作为旧id和重名次数之间的连字符呢？
+>
+>    A：因为考虑到开发者在命名帧图片资源时的大多习惯是使用`_`字符或者不使用任何字符来连接数字，如：
+>
+>    ```
+>    // 使用`_`字符
+>    .../lib/assets/anims/anim_1.png
+>    .../lib/assets/anims/anim_2.png
+>    .../lib/assets/anims/anim_3.png
+>    
+>    // 不使用任何字符
+>    .../lib/assets/anims/anim1.png
+>    .../lib/assets/anims/anim2.png
+>    .../lib/assets/anims/anim3.png
+>    
+>    ```
+>
+>    开发者很少会使用`$`作为连字符，另外这也是合法的变量命名字符，故此处选择了`$`作为连字符。
 
 ## Flr推荐的和强制的资源目录组织结构
 
@@ -241,8 +434,13 @@ flutter_project_root_dir
 
 1. 添加`flr_conig`和[r_dart_library](https://github.com/YK-Unit/r_dart_library)的依赖声明到`pubspec.yaml`。
 
-    - 添加`flr_conig`到`pubspec.yaml`。
-       - 添加[r_dart_library](https://github.com/YK-Unit/r_dart_library)的库依赖声明到`pubspec.yaml`。
+    - 添加`flr_conig`到`pubspec.yaml`：检测当前是否存在`flr_config`；若不存在，则添加`flr_config`；若存在，则按照以下步骤处理：
+
+       - 读取`dartfmt_line_length`选项、`assets`选项和`fonts`选项的值（这些选项值若存在，则应用于新建的`flr_config`；需要注意，使用前需要判断选项值是否合法：`dartfmt_line_length`选项值 >=80；`assets`选项和`fonts`选项的值为数组）
+       - 新建`flr_config`，然后使用旧值或者默认值设置各个选项
+
+    - 添加[r_dart_library](https://github.com/YK-Unit/r_dart_library)的库依赖声明到`pubspec.yaml`：
+
        - 根据[《`r_dart_library`-`FlutterSDK` 依赖关系表 》](https://github.com/YK-Unit/r_dart_library#dependency-relationship-table)和当前`FlutterSDK`的版本获取当前工程需要的最新依赖版本，如`0.1.1` 。
        - 添加库依赖声明到`pubspec.yaml`。
 
@@ -274,7 +472,10 @@ flutter_project_root_dir
 
 2. 进行核心逻辑版本检测：
 
-   检测`flr_config`中的`core_version`和当前工具的`core_version`是否一致；若不一致，则生成“核心逻辑版本不一致”的警告日志，存放到警告日志数组。
+   检测`flr_config`中的`core_version`和当前工具的`core_version`是否一致；若不一致，则按照以下步骤处理：
+
+   - 更新`flr_config`中的`core_version`的值为当前工具的`core_version`；
+   - 生成“核心逻辑版本不一致”的警告日志，存放到警告日志数组。
 
 3. 获取`assets_legal_resource_dir`数组、`fonts_legal_resource_dir`数组和`illegal_resource_dir`数组：
 
@@ -282,21 +483,21 @@ flutter_project_root_dir
    - 从`flr_config`中的`fonts`配置获取`fonts_legal_resource_dir`数组和`fonts_illegal_resource_dir`数组；
    - 合并`assets_illegal_resource_dir`数组和`fonts_illegal_resource_dir`数组为`illegal_resource_dir`数组‘；若`illegal_resource_dir`数组长度大于0，则生成“存在非法的资源目录”的警告日志，存放到警告日志数组。
 
-4. 扫描`assets_legal_resource_dir`数组中的`legal_resource_dir`，输出`image_asset`数组和`illegal_image_file`数组：
+4. 扫描`assets_legal_resource_dir`数组中的`legal_resource_dir`，输出有序的`image_asset`数组、`non_svg_image_asset`数组、`svg_image_asset`数组、`illegal_image_file`数组：
 
    - 创建`image_asset`数组、`illegal_image_file`数组；
-
    - 遍历`assets_legal_resource_dir`数组，按照如下处理每个资源目录：
       - 扫描当前资源目录和其所有层级的子目录，查找所有`image_file`；
-      
-         > 其实最好是扫描当前资源目录和其第1级的子目录；然而为了最大程序兼容到不标准的图片资源目录组织结构，所以扫描当前资源目录和其所有层级的子目录
       
       - 根据`legal_resource_file`的标准，筛选查找结果生成`legal_image_file`子数组和`illegal_image_file`子数组；`illegal_image_file`子数组合并到`illegal_image_file`数组；
       
       - 根据`image_asset`的定义，遍历`legal_image_file`子数组，生成`image_asset`子数；组；`image_asset`子数组合并到`image_asset`数组。
    - 对`image_asset`数组做去重处理；
    - 按照字典顺序对`image_asset`数组做升序排列（一般使用开发语言提供的默认的sort算法即可）；
-   - 输出`image_asset`数组和`illegal_image_file`数组。
+   - 按照SVG分类，从`image_asset`数组筛选得到有序的`non_svg_image_asset`数组和`svg_image_asset`数组：
+      - 按照SVG分类，从`image_asset`数组筛选得到`non_svg_image_asset`数组和`svg_image_asset`数组；
+      - 按照字典顺序对`non_svg_image_asset`数组和`svg_image_asset`数组做升序排列（一般使用开发语言提供的默认的sort算法即可）；
+   - 输出有序的`image_asset`数组、`non_svg_image_asset`数组、`svg_image_asset`数组、`illegal_image_file`数组。
 
 5. 扫描`assets_legal_resource_dir`数组中的`legal_resource_dir`，输出`text_asset`数组和`illegal_text_file`数组：
 
@@ -308,7 +509,7 @@ flutter_project_root_dir
       - 根据`text_asset`的定义，遍历`legal_text_file`子数组，生成`text_asset`子数组；`text_asset`子数组合并到`text_asset`数组。
    - 对`text_asset`数组做去重处理；
    - 按照字典顺序对`text_asset`数组做升序排列（一般使用开发语言提供的默认的sort算法即可）；
-   - 输出`text_asset`数组和`illegal_image_file`数组。
+   - 输出`text_asset`数组和`illegal_text_file`数组。
 
 6. 扫描`fonts_legal_resource_dir`数组中的`legal_resource_dir`，输出`font_family_config`数组、`illegal_font_file`数组：
 
@@ -336,10 +537,7 @@ flutter_project_root_dir
    - 修改`pubspec.yaml`中`flutter-assets`配置的值为`asset`数组；
    - 修改`pubspec.yaml`中`flutter-fonts`配置的值为`font_family_config`数组。
 
-9. 按照SVG分类，从`image_asset`数组筛选得到有序的`non_svg_image_asset`数组和`svg_image_asset`数组：
-
-   - 按照SVG分类，从`image_asset`数组筛选得到`non_svg_image_asset`数组和`svg_image_asset`数组；
-   - 按照字典顺序对`non_svg_image_asset`数组和`svg_image_asset`数组做升序排列（一般使用开发语言提供的默认的sort算法即可）；
+9. 分别遍历`non_svg_image_asset`数组、`svg_image_asset`数组、`text_asset`数组，根据`asset_id`生成算法，分别输出`non_svg_image_asset_id`字典、`svg_image_asset_id` 字典、`text_asset_id`字典。字典的key为`asset`，value为`asset_id`。
 
 10. 在当前根目录下创建新的`r.g.dart`文件。
 
