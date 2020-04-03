@@ -333,17 +333,18 @@ flutter_project_root_dir
 │   ├── ..
 ├── lib
 │   ├── assets
-│   │   ├── #{module}-images // 某个模块的图片资源总目录
-│   │   │   ├── #{main_image_asset}
-│   │   │   ├── #{variant-dir} // 某个变体版本的图片资源总目录
-│   │   │   │   ├── #{image_asset_variant}
+│   │   ├── images // 图片资源总目录
+│   │   │   ├── #{module} // 某个模块的图片资源总目录
+│   │   │   │   ├── #{main_image_asset}
+│   │   │   │   ├── #{variant-dir} // 某个变体版本的图片资源总目录
+│   │   │   │   │   ├── #{image_asset_variant}
 │   │   │   │
-│   │   ├── home-images // home模块的图片资源总目录
-│   │   │   ├── home_icon.png
-│   │   │   ├── home_badge.svg
-│   │   │   ├── 3.0x // 3.0倍分辨率版本的图片资源总目录
+│   │   │   ├── home // home模块的图片资源总目录
+│   │   │   │   ├── home_badge.svg
 │   │   │   │   ├── home_icon.png
-│   │   │   │
+│   │   │   │   ├── 3.0x // 3.0倍分辨率版本的图片资源总目录
+│   │   │   │   │   ├── home_icon.png
+│   │   │   │		
 │   │   ├── texts // 文本资源总目录
 │   │   │   │     // （你也可以根据模块进一步细分）
 │   │   │   └── test.json
@@ -369,20 +370,21 @@ flutter开发者在flutter工程应该（SHOULD）按照以下建议组织结构
 flutter_project_root_dir
 ├── build
 │   ├── ..
-├── path
-│   ├── to
-│   │   ├── user-images // user模块的图片资源总目录
-│   │   │   ├── user_icon.png
-│   │   │   ├── user_badge.svg
-│   │   │   ├── 3.0x // 3.0倍分辨率版本的图片资源总目录
+├── lib
+│   ├── assets
+│   │   ├── images // 图片资源总目录
+│   │   │   ├── user // user模块的图片资源总目录
+│   │   │   │   ├── user_badge.svg
 │   │   │   │   ├── user_icon.png
+│   │   │   │   ├── 3.0x // 3.0倍分辨率版本的图片资源总目录
+│   │   │   │   │   ├── user_icon.png
 │   │   │   │
-│   │   ├── home-images // home模块的图片资源根目录
-│   │   │   ├── home_icon.png
-│   │   │   ├── home_badge.svg
-│   │   │   ├── 3.0x // 3.0倍分辨率版本的图片资源总目录
+│   │   │   ├── home // home模块的图片资源总目录
+│   │   │   │   ├── home_badge.svg
 │   │   │   │   ├── home_icon.png
-│   │   │   │
+│   │   │   │   ├── 3.0x // 3.0倍分辨率版本的图片资源总目录
+│   │   │   │   │   ├── home_icon.png
+│   │   │   │		
 │   │   ├── texts // 文本资源总目录
 │   │   │   │     // （你也可以根据模块进一步细分）
 │   │   │   └── test.json
