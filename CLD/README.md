@@ -229,7 +229,7 @@ flutter_project_root_dir
 1. 添加`flr_conig`和[r_dart_library](https://github.com/YK-Unit/r_dart_library)的依赖声明到`pubspec.yaml`。
 
     - 添加`flr_conig`到`pubspec.yaml`。
-       - 添加[r_dart_library](https://github.com/YK-Unit/r_dart_library)的库依赖声明到`pubspec.yaml`。
+    - 添加[r_dart_library](https://github.com/YK-Unit/r_dart_library)的库依赖声明到`pubspec.yaml`。
        - 根据[《`r_dart_library`-`FlutterSDK` 依赖关系表 》](https://github.com/YK-Unit/r_dart_library#dependency-relationship-table)和当前`FlutterSDK`的版本获取当前工程需要的最新依赖版本，如`0.1.1` 。
        - 添加库依赖声明到`pubspec.yaml`。
 
@@ -291,7 +291,7 @@ flutter_project_root_dir
       - 根据`text_asset`的定义，遍历`legal_text_file`子数组，生成`text_asset`子数组；`text_asset`子数组合并到`text_asset`数组。
    - 对`text_asset`数组做去重处理；
    - 按照字典顺序对`text_asset`数组做升序排列（一般使用开发语言提供的默认的sort算法即可）；
-   - 输出`text_asset`数组和`illegal_image_file`数组。
+   - 输出`text_asset`数组和`illegal_text_file`数组。
 
 6. 扫描`fonts_legal_resource_dir`数组中的`legal_resource_dir`，输出`font_family_config`数组、`illegal_font_file`数组：
 
