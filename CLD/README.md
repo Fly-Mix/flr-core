@@ -160,7 +160,7 @@ def self.is_asset_variant?(legal_resource_file)
     dirname = File.dirname(legal_resource_file)
     parent_dir_name = File.basename(dirname)
 
-    ratio_regx = /^[0-9]*\.?[0-9]+[x]$/
+    ratio_regx = /^((0\.[0-9]+)|([1-9]+[0-9]*\.?[0-9]+))[x]$/
     if parent_dir_name =~ ratio_regx
       return true
     end
@@ -333,7 +333,7 @@ flutter_project_root_dir
 │   ├── ..
 ├── lib
 │   ├── assets
-│   │   ├── images // 图片资源总目录
+│   │   ├── images // 所有模块的图片资源总目录
 │   │   │   ├── #{module} // 某个模块的图片资源总目录
 │   │   │   │   ├── #{main_image_asset}
 │   │   │   │   ├── #{variant-dir} // 某个变体版本的图片资源总目录
@@ -372,7 +372,7 @@ flutter_project_root_dir
 │   ├── ..
 ├── lib
 │   ├── assets
-│   │   ├── images // 图片资源总目录
+│   │   ├── images // 所有模块的图片资源总目录
 │   │   │   ├── user // user模块的图片资源总目录
 │   │   │   │   ├── user_badge.svg
 │   │   │   │   ├── user_icon.png
