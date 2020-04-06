@@ -15,22 +15,26 @@
 
 #### 资源
 
-1. `resource_dir`: the resource directory relative to flutter project's root directory, for example: `lib/assets/images`, `lib/assets/jsons` .
-1. `implied_resource_dir`:  the `resource_dir` without `lib/`, for example: `assets/images`, `assets/jsons` .
+1. `resource_dir`: the resource directory in flutter project's root directory, for example: `~/path/to/flutter_r_demo/lib/assets/images`, `~/path/to/flutter_r_demo/lib/assets/jsons` .
+1. `relative_resource_dir`: the resource directory relative to flutter project's root directory, for example: `lib/assets/images`, `lib/assets/jsons` .
+1. `implied_relative_resource_dir`:  the `relative_resource_dir` without `lib/`, for example: `assets/images`, `assets/jsons` .
 1. `package_name`: the name of flutter project's package production, for example, the `package_name` of [Flutter-R Demo Project](https://github.com/Fly-Mix/flutter_r_demo) is `flutter_r_demo`. It can be accessed from `pubspec.yaml`.
-1. `resource_file`: the real file in resource directory , for example, the resource files in `lib/assets/images` resource directory:
+1. `resource_file`: the real file in resource directory :
+   - `~/path/to/flutter_r_demo/lib/assets/images/hot_foot_N.png` 
+   - `~/path/to/flutter_r_demo/lib/assets/images/3.0x/hot_foot_N.png`
+1. `relative_resource_file`: the resource file resource relative to flutter project's root directory:
    - `lib/assets/images/hot_foot_N.png` 
    - `lib/assets/images/3.0x/hot_foot_N.png`
-1. `implied_resource_file`:  the `resource_file` without `lib/`, for example: `assets/images/hot_foot_N.png` .
+1. `implied_relative_resource_file`:  the `relative_resource_file` without `lib/`, for example: `assets/images/hot_foot_N.png` .
 1. `file_basename`: the resource file's basename, for example: `hot_foot_N.png` .
 1. `file_basename_no_extension`: the resource file's basename with no file extension, for example: `hot_foot_N` .
 1. `file_extname`: the resource file's extension, for example: `.png`
 1. `file_dirname`: the resource file's dirname, for example: `lib/assets/images`
 1. `asset`: the resource file's mapping file in flutter project's package production, also the resource file's declaration in `pubspec.yaml`. For example: `packages/flutter_r_demo/assets/images/hot_foot_N.png` , `packages/flutter_r_demo/assets/jsons/test.json` .
 1. `asset_name`: The name of the main `asset` from the set of asset resources to choose from. For example: `assets/images/hot_foot_N.png` , `assets/jsons/test.json` .
-1. `image_asset`: the mapping and declaration of image resource file. It's definition is: `packages/#{package_name}/#{implied_resource_dir}/#{file_basename}` . For example: `packages/flutter_r_demo/assets/images/hot_foot_N.png` .  Each `image_asset` correspond to one main `resource_file` and it's variants, for example, `packages/flutter_r_demo/assets/images/hot_foot_N.png` correspond to `lib/assets/images/hot_foot_N.png` and it's variants (such as `lib/assets/images/2.0x/hot_foot_N.png`) .
-1. `text_asset`: the mapping and declaration of text resource file. It's definition is: `packages/#{package_name}/#{implied_resource_file}`. For example: `packages/flutter_r_demo/assets/jsons/test.json` . Each `text_asset` correspond to one  `resource_file`, for example `packages/flutter_r_demo/assets/jsons/test.json` correspond to `lib/assets/jsons/test.json` .
-1. `font_asset`: the mapping and declaration of text resource file. It's definition is: `packages/#{package_name}/#{implied_resource_file}`. For example: `packages/flutter_r_demo/assets/fonts/Amiri/Amiri-Regular.ttf` . Each `text_asset` correspond to one  `resource_file`, for example `packages/flutter_r_demo/assets/fonts/Amiri/Amiri-Regular.ttf` correspond to `lib/assets/fonts/Amiri/Amiri-Regular.ttf` .
+1. `image_asset`: the mapping and declaration of image resource file. It's definition is: `packages/#{package_name}/#{implied_resource_dir}/#{file_basename}` . For example: `packages/flutter_r_demo/assets/images/hot_foot_N.png` .  Each `image_asset` correspond to one main resource file and it's variants, for example, `packages/flutter_r_demo/assets/images/hot_foot_N.png` correspond to `lib/assets/images/hot_foot_N.png` and it's variants (such as `lib/assets/images/2.0x/hot_foot_N.png`) .
+1. `text_asset`: the mapping and declaration of text resource file. It's definition is: `packages/#{package_name}/#{implied_resource_file}`. For example: `packages/flutter_r_demo/assets/jsons/test.json` . Each `text_asset` correspond to one  resource file, for example `packages/flutter_r_demo/assets/jsons/test.json` correspond to `lib/assets/jsons/test.json` .
+1. `font_asset`: the mapping and declaration of text resource file. It's definition is: `packages/#{package_name}/#{implied_resource_file}`. For example: `packages/flutter_r_demo/assets/fonts/Amiri/Amiri-Regular.ttf` . Each `text_asset` correspond to one  resource file, for example `packages/flutter_r_demo/assets/fonts/Amiri/Amiri-Regular.ttf` correspond to `lib/assets/fonts/Amiri/Amiri-Regular.ttf` .
 1. `asset_id`: the identity of `asset`  , which is usually `file_basename_no_extension` of  `asset`. 
 1. `image_file`: includes `non-svg_image_file` and `svg_image_file` .
    - `non-svg_image_file`: the resource file with suffixes:  `.png`,  `.jpg`,  `.jpeg`, `.gif`, `.webp`, `.icon`, `.bmp`, `.wbmp` .
@@ -154,14 +158,25 @@ Flutter官方是通过一种名为`asset variant`（资产变体）的机制，�
 #### 判断资源文件是不是`asset variant`
 
 ```ruby
+# 判断当前的资源文件是不是资产变体（asset_variant）类型
+#
+# 判断的核心算法是：
+# - 获取资源文件的父目录；
+# - 判断父目录是否符合资产变体目录的特征
+#   资产变体映射的的资源文件要求存放在“与 main_asset 在同一个目录下的”、“符合指定特征的”子目录中；
+#   截止目前，Flutter只支持一种变体类型：倍率变体；
+#   倍率变体只适用于非SVG类图片资源；
+#   倍率变体目录特征可使用此正则来判断：“^((0\.[0-9]+)|([1-9]+[0-9]*(\.[0-9]+)?))[x]$”；
+#   倍率变体目录名称示例：“0.5x”、“1.5x”、“2.0x”、“3.0x”，“2x”、“3x”；
+#
 def self.is_asset_variant?(legal_resource_file)
 
   if FileUtil.is_non_svg_image_resource_file?(legal_resource_file)
     dirname = File.dirname(legal_resource_file)
     parent_dir_name = File.basename(dirname)
 
-    ratio_regx = /^((0\.[0-9]+)|([1-9]+[0-9]*(\.[0-9]+)?))[x]$/
-    if parent_dir_name =~ ratio_regx
+    ratio_regex = /^((0\.[0-9]+)|([1-9]+[0-9]*(\.[0-9]+)?))[x]$/
+    if parent_dir_name =~ ratio_regex
       return true
     end
   end
@@ -173,48 +188,57 @@ end
 ## 为资源文件生成`main asset`
 
 ```ruby
-# generate_main_asset(legal_resource_file, package_name) -> main_asset
-#
 # 为当前资源文件生成 main_asset
 #
 # === Examples
-# === Example-1
-# legal_resource_file = "lib/assets/images/test.png"
+# flutter_dir = "~path/to/flutter_r_demo"
 # package_name = "flutter_r_demo"
+#
+# === Example-1
+# legal_resource_file = "~/path/to/flutter_r_demo/lib/assets/images/test.png"
 # main_asset = "packages/flutter_r_demo/assets/images/test.png"
 #
 # === Example-2
-# legal_resource_file = "lib/assets/images/3.0x/test.png"
-# package_name = "flutter_r_demo"
+# legal_resource_file = "~/path/to/flutter_r_demo/lib/assets/images/3.0x/test.png"
 # main_asset = "packages/flutter_r_demo/assets/images/test.png"
 #
 # === Example-3
-# legal_resource_file = "lib/assets/texts/3.0x/test.json"
-# package_name = "flutter_r_demo"
+# legal_resource_file = "~/path/to/flutter_r_demo/lib/assets/texts/3.0x/test.json"
 # main_asset = "packages/flutter_r_demo/assets/texts/3.0x/test.json"
 #
 # === Example-3
-# legal_resource_file = "lib/assets/fonts/Amiri/Amiri-Regular.ttf"
-# package_name = "flutter_r_demo"
+# legal_resource_file = "~/path/to/flutter_r_demo/lib/assets/fonts/Amiri/Amiri-Regular.ttf"
 # main_asset = "packages/flutter_r_demo/fonts/Amiri/Amiri-Regular.ttf"
 #
-def self.generate_main_asset(legal_resource_file, package_name)
-  main_asset_mapping_file = legal_resource_file
-
-  if is_asset_variant?(legal_resource_file)
-    file_basename = File.basename(legal_resource_file)
-    dirname = File.dirname(legal_resource_file)
-    main_asset_mapping_file_dirname = File.dirname(dirname)
-
-    main_asset_mapping_file = "#{main_asset_mapping_file_dirname}/#{file_basename}"
+def self.generate_main_asset(flutter_dir, package_name, legal_resource_file)
+  #to get relative_legal_resource_file: lib/assets/images/3.0x/test.png
+  flutter_dir_prefix = "#{flutter_dir}/"
+  relative_legal_resource_file = legal_resource_file
+  if relative_legal_resource_file =~ /\A#{flutter_dir_prefix}/
+    relative_legal_resource_file["#{flutter_dir_prefix}"] = ""
   end
 
-  implied_resource_file = main_asset_mapping_file
-  if implied_resource_file.include?("lib/")
-    implied_resource_file = implied_resource_file.split("lib/")[1]
+  # to get implied_relative_resource_file: assets/images/3.0x/test.png
+  lib_prefix = "lib/"
+  implied_relative_resource_file = relative_legal_resource_file;
+  if implied_relative_resource_file =~ /\A#{lib_prefix}/
+    implied_relative_resource_file[lib_prefix] = ""
   end
-  main_asset = "packages/#{package_name}/#{implied_resource_file}"
 
+  # to get main_implied_relative_resource_file: assets/images/test.png
+  main_implied_relative_resource_file = implied_relative_resource_file
+  if is_asset_variant?(implied_relative_resource_file)
+    # test.png
+    file_basename = File.basename(implied_relative_resource_file)
+    # assets/images/3.0x
+    file_dir = File.dirname(implied_relative_resource_file)
+    # assets/images
+    main_implied_relative_resource_file_dir = File.dirname(file_dir)
+    # assets/images/test.png
+    main_implied_relative_resource_file = "#{main_implied_relative_resource_file_dir}/#{file_basename}"
+  end
+
+  main_asset = "packages/#{package_name}/#{main_implied_relative_resource_file}"
   return main_asset
 end
 ```
@@ -523,7 +547,7 @@ flutter_project_root_dir
          - 扫描当前子目录和其所有子目录，查找所有`font_file`；
          - 根据`legal_resource_file`的标准，筛选查找结果生成`legal_font_file`数组和`illegal_font_file`子数组；`illegal_font_file`子数组合并到`illegal_font_file`数组；
          - 据`font_asset`的定义，遍历`legal_font_file`数组，生成`font_asset_config`数组；
-         - 按照字典顺序对生成font_asset_config数组做升序排列（比较asset的值）；
+         - 按照字典顺序对生成`font_asset_config`数组做升序排列（比较asset的值）；
          - 根据`font_family_config`的定义，为当前子目录组织`font_family_name`和`font_asset_config`数组生成`font_family_config`对象，添加到`font_family_config`子数组；`font_family_config`子数组合并到`font_family_config`数组。
    - 输出`font_family_config`数组、`illegal_font_file`数组；
    - 按照字典顺序对font_family_config数组做升序排列（比较family的值）。
