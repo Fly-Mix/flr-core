@@ -155,6 +155,34 @@ Flutter官方是通过一种名为`asset variant`（资产变体）的机制，�
 
 ## Flr的算法（ruby版本）
 
+#### 判断资源文件是否合法
+
+```ruby
+# 判断当前资源文件是否合法
+#
+# 判断资源文件合法的标准是：
+# 其file_basename_no_extension 由字母（a-z、A-Z）、数字（0-9）、其他合法字符（'_', '+', '-', '.', '·', '!', '@', '&', '$', '￥'）组成
+#
+# === Examples
+# good_file = "~/path/to/flutter_project/lib/assets/images/test.png"
+# bad_file = "~/path/to/flutter_project/lib/assets/images/~.png"
+# is_legal_resource_file?(good_file) -> true
+# is_legal_resource_file?(bad_file) -> false
+#
+def self.is_legal_resource_file?(file)
+  file_basename_no_extension = File.basename(file, ".*")
+  regx = /^[a-zA-Z0-9_\+\-\.·!@&$￥]+$/
+
+  if file_basename_no_extension =~ regx
+    return true
+  else
+    return false
+  end
+end
+```
+
+
+
 #### 判断资源文件是不是`asset variant`
 
 ```ruby
