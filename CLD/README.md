@@ -371,6 +371,38 @@ end
 >
 >    开发者很少会使用`$`作为连字符，另外这也是合法的变量命名字符，故此处选择了`$`作为连字符。
 
+#### 为`font_family`生成`font_family_id`
+
+```ruby
+# === Examples
+# a_font_family_name = "Amiri"
+# b_font_family_name = "Baloo-Thambi-2"
+# a_font_family_id = "amiri"
+# b_font_family_id = "baloo_Thambi_2"
+#
+#
+def self.generate_font_family_id(font_family_name)
+
+  font_family_id = font_family_name.dup
+
+  # 处理非法字符
+  font_family_id = font_family_id.gsub(/[^a-zA-Z0-9_$]/, "_")
+
+  # 首字母转化为小写
+  capital = font_family_id[0].downcase
+  font_family_id[0] = capital
+
+  # 处理首字符异常情况
+  if capital =~ /[0-9_$]/
+    font_family_id = "a" + font_family_id
+  end
+
+  return font_family_id
+end
+```
+
+
+
 ## Flr推荐的和强制的资源目录组织结构
 
 为了让`Flr`更好地扫描资源，flutter开发者在flutter工程应该（SHOULD）按照以下建议组织整体资源目录结构，以及应该（SHOULD）按照以下建议组织存放图片资源和文本资源，必须（MUST）按照以下要求组织存放字体资源。
