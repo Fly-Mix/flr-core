@@ -77,7 +77,7 @@
 
    -  `core_version`:  用于存放`Flr`工具实现的核心逻辑版本（`CoreLogic version`），初始值由`Flr`工具执行初始化时自动填写
 
-   -  `dartfmt_line_length`：用于存放`Flr`的CLI版本工具对`r.g.dart`进行格式化时的行长，初始值为：80（dartfmt工具的默认值）；后期用户可根据团队需要进行手动修改
+   -  `dartfmt_line_length`：用于存放`Flr`工具的CLI版本和VSCode Extension版本对`r.g.dart`进行格式化时的行长，初始值为：80（dartfmt工具的默认值）；后期用户可根据团队需要进行手动修改
 
    - `assets`：用于配置需要`Flr`扫描图片资源和文本资源的`resource_dir`数组，初始值为空数组`[]`；初始化完毕后，新值由用户填写，如：
 
