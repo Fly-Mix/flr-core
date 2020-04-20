@@ -4,7 +4,11 @@
 
 这是`Flr`的核心逻辑描述文档，用于`Flr`的核心功能的逻辑细节，以确保`Flr`工具系列版本（[CLI版本](https://github.com/Fly-Mix/flr-cli)、[VSCode Extension版本](https://github.com/Fly-Mix/flr-vscode-extension)、[Android Studio Plugin版本](https://github.com/Fly-Mix/flr-as-plugin)）在核心功能上能保持良好的一致性。而更进一步地，我们希望未来能在其他输出产物（文件输出、日志输出、交互输出）上也保持一致性。
 
+## Flr设计原则
 
+在进行版本迭代设计时，应当遵守以下设计原则：
+
+- 增量式设计（IncrementDesign） 优于 破坏式设计（BreakingDesign）
 
 ## Flr术语
 
@@ -32,6 +36,7 @@
    - `~/path/to/flutter_r_demo/assets/images/3.0x/test.png`
    - `~/path/to/flutter_r_demo/lib/assets/images/3.0x/hot_foot_N.png`
 1. `non-implied_resource_file`:  the `resource_file` which is outside of `lib/` directory, for example:
+   
    - `~/path/to/flutter_r_demo/assets/images/test.png` 
    - `~/path/to/flutter_r_demo/assets/images/3.0x/test.png`
 1. `implied_resource_file`:  the `resource_file` which is inside of  `lib/` directory, for example:
