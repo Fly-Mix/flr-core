@@ -102,7 +102,7 @@
    - `text_asset`: the text-type main resource file's declaration. For example: 
      - `assets/texts/config.yaml` : `assets/texts/config.yaml` 
       - `lib/assets/texts/config.yaml`: `packages/flutter_r_demo/assets/texts/config.yaml`
-      
+     
    - `font_asset`: the font-type main resource file's declaration. For example: 
    - `assets/fonts/Amiri/Amiri-Bold.ttf` : `assets/fonts/Amiri/Amiri-Bold.ttf` 
       - `lib/assets/fonts/Amiri/Amiri-Bold.ttf`: `packages/flutter_r_demo/assets/fonts/Amiri/Amiri-Bold.ttf`
@@ -535,43 +535,81 @@ end
 
 #### Flr推荐的整体资源目录组织结构
 
-flutter开发者在flutter工程应该（SHOULD）按照以下建议组织整体资源目录结构，包括组织图片资源、文本资源、字体资源：
+flutter开发者在flutter工程应该（SHOULD）按照以下方案组织整体资源目录结构，包括组织图片资源、文本资源、字体资源：
 
-```
-flutter_project_root_dir
-├── build
-│   ├── ..
-├── lib
-│   ├── assets
-│   │   ├── images // 所有模块的图片资源总目录
-│   │   │   ├── #{module} // 某个模块的图片资源总目录
-│   │   │   │   ├── #{main_image_asset}
-│   │   │   │   ├── #{variant-dir} // 某个变体版本的图片资源总目录
-│   │   │   │   │   ├── #{image_asset_variant}
-│   │   │   │
-│   │   │   ├── home // home模块的图片资源总目录
-│   │   │   │   ├── home_badge.svg
-│   │   │   │   ├── home_icon.png
-│   │   │   │   ├── 3.0x // 3.0倍分辨率版本的图片资源总目录
-│   │   │   │   │   ├── home_icon.png
-│   │   │   │		
-│   │   ├── texts // 文本资源总目录
-│   │   │   │     // （你也可以根据模块进一步细分）
-│   │   │   └── test.json
-│   │   │   └── test.yaml
-│   │   │   │
-│   │   ├── fonts // 所有字体家族的字体资源总目录
-│   │   │   ├── #{font-family} // 某个字体家族的字体资源总目录
-│   │   │   │   ├── #{font-family}-#{font_weight_or_style}.ttf
-│   │   │   │
-│   │   │   ├── Amiri // Amiri字体家族的字体资源总目录
-│   │   │   │   ├── Amiri-Regular.ttf
-│   │   │   │   ├── Amiri-Bold.ttf
-│   │   │   │   ├── Amiri-Italic.ttf
-│   │   │   │   ├── Amiri-BoldItalic.ttf
-│   ├── ..
-```
+- 方案一
 
+  ```
+  flutter_project_root_dir
+  ├── build
+  │   ├── ..
+  ├── lib
+  │   ├── assets
+  │   │   ├── images // 所有模块的图片资源总目录
+  │   │   │   ├── #{module} // 某个模块的图片资源总目录
+  │   │   │   │   ├── #{main_image_asset}
+  │   │   │   │   ├── #{variant-dir} // 某个变体版本的图片资源总目录
+  │   │   │   │   │   ├── #{image_asset_variant}
+  │   │   │   │
+  │   │   │   ├── home // home模块的图片资源总目录
+  │   │   │   │   ├── home_badge.svg
+  │   │   │   │   ├── home_icon.png
+  │   │   │   │   ├── 3.0x // 3.0倍分辨率版本的图片资源总目录
+  │   │   │   │   │   ├── home_icon.png
+  │   │   │   │		
+  │   │   ├── texts // 文本资源总目录
+  │   │   │   │     // （你也可以根据模块进一步细分）
+  │   │   │   └── test.json
+  │   │   │   └── test.yaml
+  │   │   │   │
+  │   │   ├── fonts // 所有字体家族的字体资源总目录
+  │   │   │   ├── #{font-family} // 某个字体家族的字体资源总目录
+  │   │   │   │   ├── #{font-family}-#{font_weight_or_style}.ttf
+  │   │   │   │
+  │   │   │   ├── Amiri // Amiri字体家族的字体资源总目录
+  │   │   │   │   ├── Amiri-Regular.ttf
+  │   │   │   │   ├── Amiri-Bold.ttf
+  │   │   │   │   ├── Amiri-Italic.ttf
+  │   │   │   │   ├── Amiri-BoldItalic.ttf
+  │   ├── ..
+  ```
+- 方案二
+
+  ```
+  flutter_project_root_dir
+  ├── build
+  │   ├── ..
+  ├── lib
+  │   ├── ..
+  ├── assets
+  │   ├── images // 所有模块的图片资源总目录
+  │   │   ├── #{module} // 某个模块的图片资源总目录
+  │   │   │   ├── #{main_image_asset}
+  │   │   │   ├── #{variant-dir} // 某个变体版本的图片资源总目录
+  │   │   │   │   ├── #{image_asset_variant}
+  │   │   │
+  │   │   ├── home // home模块的图片资源总目录
+  │   │   │   ├── home_badge.svg
+  │   │   │   ├── home_icon.png
+  │   │   │   ├── 3.0x // 3.0倍分辨率版本的图片资源总目录
+  │   │   │   │   ├── home_icon.png
+  │   │   │		
+  │   ├── texts // 文本资源总目录
+  │   │   │     // （你也可以根据模块进一步细分）
+  │   │   └── test.json
+  │   │   └── test.yaml
+  │   │   │
+  │   ├── fonts // 所有字体家族的字体资源总目录
+  │   │   ├── #{font-family} // 某个字体家族的字体资源总目录
+  │   │   │   ├── #{font-family}-#{font_weight_or_style}.ttf
+  │   │   │
+  │   │   ├── Amiri // Amiri字体家族的字体资源总目录
+  │   │   │   ├── Amiri-Regular.ttf
+  │   │   │   ├── Amiri-Bold.ttf
+  │   │   │   ├── Amiri-Italic.ttf
+  │   │   │   ├── Amiri-BoldItalic.ttf
+  ├── ..
+  ```
 #### Flr推荐的图片资源和文本资源目录组织结构
 
 flutter开发者在flutter工程应该（SHOULD）按照以下建议组织结构存放图片资源和文本资源——其中，若某类资源较多，如图片资源，建议按照模块分类存放；其中，若某类资源较少，如文本资源，可直接存放在一个文件夹即可。
@@ -580,8 +618,8 @@ flutter开发者在flutter工程应该（SHOULD）按照以下建议组织结构
 flutter_project_root_dir
 ├── build
 │   ├── ..
-├── lib
-│   ├── assets
+├── path
+│   ├── to
 │   │   ├── images // 所有模块的图片资源总目录
 │   │   │   ├── user // user模块的图片资源总目录
 │   │   │   │   ├── user_badge.svg
