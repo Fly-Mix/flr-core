@@ -14,33 +14,130 @@
 2. Core Logic Version（核心逻辑版本号）：指Flr工具所使用的核心逻辑的版本号（如第一个核心逻辑的版本号是`1.0.0`），由开发团队统一管理
 
 #### 资源
-
-1. `resource_dir`: the resource directory in flutter project's root directory, for example: `~/path/to/flutter_r_demo/lib/assets/images`, `~/path/to/flutter_r_demo/lib/assets/jsons` .
-1. `relative_resource_dir`: the resource directory relative to flutter project's root directory, for example: `lib/assets/images`, `lib/assets/jsons` .
-1. `implied_relative_resource_dir`:  the `relative_resource_dir` without `lib/`, for example: `assets/images`, `assets/jsons` .
+##### resource
+1. `resource_dir`: the resource directory in flutter project's root directory, for example: `~/path/to/flutter_r_demo/assets/images`, `~/path/to/flutter_r_demo/lib/assets/images` .
+1. `relative_resource_dir`: the resource directory relative to flutter project's root directory, for example: `assets/images`, `lib/assets/images` .
+2. `variant_dir`: a directory which's name matches the variation, such as `1.5x`, `3.0x`, `3x`.   To get more details, please see the below 《Flutter 中的`main asset`和`asset variant`》.
 1. `package_name`: the name of flutter project's package production, for example, the `package_name` of [Flutter-R Demo Project](https://github.com/Fly-Mix/flutter_r_demo) is `flutter_r_demo`. It can be accessed from `pubspec.yaml`.
 1. `resource_file`: the real file in resource directory :
+   - `~/path/to/flutter_r_demo/assets/images/test.png` 
+   - `~/path/to/flutter_r_demo/assets/images/3.0x/test.png`
+   - `~/path/to/flutter_r_demo/lib/assets/images/hot_foot_N.png` 
+   - `~/path/to/flutter_r_demo/lib/assets/images/3.0x/hot_foot_N.png`
+1. `main_resource_file`: the `resource_file` which is outside `variant_dir` :
+   
+   - `~/path/to/flutter_r_demo/assets/images/test.png` 
+   - `~/path/to/flutter_r_demo/lib/assets/images/hot_foot_N.png` 
+1. `variant_resource_file`: the `resource_file` which is inside `variant_dir`:
+   - `~/path/to/flutter_r_demo/assets/images/3.0x/test.png`
+   - `~/path/to/flutter_r_demo/lib/assets/images/3.0x/hot_foot_N.png`
+1. `non-implied_resource_file`:  the `resource_file` which is outside of `lib/` directory, for example:
+   - `~/path/to/flutter_r_demo/assets/images/test.png` 
+   - `~/path/to/flutter_r_demo/assets/images/3.0x/test.png`
+1. `implied_resource_file`:  the `resource_file` which is inside of  `lib/` directory, for example:
+   
    - `~/path/to/flutter_r_demo/lib/assets/images/hot_foot_N.png` 
    - `~/path/to/flutter_r_demo/lib/assets/images/3.0x/hot_foot_N.png`
 1. `relative_resource_file`: the resource file resource relative to flutter project's root directory:
+   - `assets/images/test.png` 
+   - `assets/images/3.0x/test.png`
    - `lib/assets/images/hot_foot_N.png` 
    - `lib/assets/images/3.0x/hot_foot_N.png`
-1. `implied_relative_resource_file`:  the `relative_resource_file` without `lib/`, for example: `assets/images/hot_foot_N.png` .
-1. `file_basename`: the resource file's basename, for example: `hot_foot_N.png` .
-1. `file_basename_no_extension`: the resource file's basename with no file extension, for example: `hot_foot_N` .
+1. `main_relative_resource_file`: the `relative_resource_file` which is outside `variant_dir`:
+   - `assets/images/test.png` 
+   - `lib/assets/images/hot_foot_N.png` 
+1. `variant_relative_resource_file`: the `relative_resource_file` which is inside `variant_dir` :
+   
+   - `assets/images/3.0x/test.png`
+   - `lib/assets/images/3.0x/hot_foot_N.png`
+   
+   > Q: How to convert `variant_relative_resource_file` to `main_relative_resource_file` ?
+   > 
+   > A: `variant_relative_resource_file` remove the `variant_dir`, then you can get the `main_relative_resource_file` , for example:
+   > 
+   >   - `assets/images/3.0x/test.png`: `assets/images/test.png`
+   >   - `lib/assets/images/3.0x/hot_foot_N.png`: `lib/assets/images/hot_foot_N.png`
+   >
+1. `non-implied_relative_resource_file`:  the `relative_resource_file` which is outside of `lib/` directory, for example:
+   - `assets/images/test.png` 
+   - `assets/images/3.0x/test.png`
+1. `implied_relative_resource_file`:  the `relative_resource_file` which is inside of  `lib/` directory, for example:
+   - `lib/assets/images/hot_foot_N.png` 
+   - `lib/assets/images/3.0x/hot_foot_N.png`
+1. `file_basename`: the resource file's basename, for example:
+   - `assets/images/test.png` : `test.png`
+   - `lib/assets/images/hot_foot_N.png` : `hot_foot_N.png`
+1. `file_basename_no_extension`: the resource file's basename with no file extension, for example: 
+   - `assets/images/test.png` : `test`
+   - `lib/assets/images/hot_foot_N.png` : `hot_foot_N`
 1. `file_extname`: the resource file's extension, for example: `.png`
-1. `file_dirname`: the resource file's dirname, for example: `lib/assets/images`
-1. `asset`: the resource file's mapping file in flutter project's package production, also the resource file's declaration in `pubspec.yaml`. For example: `packages/flutter_r_demo/assets/images/hot_foot_N.png` , `packages/flutter_r_demo/assets/jsons/test.json` .
-1. `asset_name`: The name of the main `asset` from the set of asset resources to choose from. For example: `assets/images/hot_foot_N.png` , `assets/jsons/test.json` .
-1. `image_asset`: the mapping and declaration of image resource file. It's definition is: `packages/#{package_name}/#{implied_resource_dir}/#{file_basename}` . For example: `packages/flutter_r_demo/assets/images/hot_foot_N.png` .  Each `image_asset` correspond to one main resource file and it's variants, for example, `packages/flutter_r_demo/assets/images/hot_foot_N.png` correspond to `lib/assets/images/hot_foot_N.png` and it's variants (such as `lib/assets/images/2.0x/hot_foot_N.png`) .
-1. `text_asset`: the mapping and declaration of text resource file. It's definition is: `packages/#{package_name}/#{implied_resource_file}`. For example: `packages/flutter_r_demo/assets/jsons/test.json` . Each `text_asset` correspond to one  resource file, for example `packages/flutter_r_demo/assets/jsons/test.json` correspond to `lib/assets/jsons/test.json` .
-1. `font_asset`: the mapping and declaration of text resource file. It's definition is: `packages/#{package_name}/#{implied_resource_file}`. For example: `packages/flutter_r_demo/assets/fonts/Amiri/Amiri-Regular.ttf` . Each `text_asset` correspond to one  resource file, for example `packages/flutter_r_demo/assets/fonts/Amiri/Amiri-Regular.ttf` correspond to `lib/assets/fonts/Amiri/Amiri-Regular.ttf` .
-1. `asset_id`: the identity of `asset`  , which is usually `file_basename_no_extension` of  `asset`. 
+1. `file_dirname`: the resource file's dirname, for example: 
+   - `assets/images/test.png` : `assets/images`
+   - `lib/assets/images/hot_foot_N.png` : `lib/assets/images`
 1. `image_file`: includes `non-svg_image_file` and `svg_image_file` .
    - `non-svg_image_file`: the resource file with suffixes:  `.png`,  `.jpg`,  `.jpeg`, `.gif`, `.webp`, `.icon`, `.bmp`, `.wbmp` .
    - `svg_image_file`: the resource file with suffixes:  `.svg` .
 1. `text_file`: the resource file with suffixes: `.txt`、`.json`、`.yaml`、`.xml` .
 1. `font_file`: the resource file with suffixes: `.ttf`、`.otf`、`.ttc`.
+
+##### asset
+1. `asset`: the resource file's declaration in `pubspec.yaml`. For example: 
+
+   - `assets/images/test.png`
+   - `packages/flutter_r_demo/assets/images/hot_foot_N.png`
+   
+1. `main_asset`:  the main resource file's declaration in `pubspec.yaml`. Up to now, `main_asset`  has 3 types:
+
+   - `image_asset`:  the image-type main resource file's declaration. For example: 
+   - `assets/images/test.png` : `assets/images/test.png` 
+     - `assets/images/3.0x/test.png` : `assets/images/test.png` 
+     - `lib/assets/images/hot_foot_N.png` : `packages/flutter_r_demo/assets/images/hot_foot_N.png`
+     - `lib/assets/images/3.0x/hot_foot_N.png`: `packages/flutter_r_demo/assets/images/hot_foot_N.png`
+     
+   - `text_asset`: the text-type main resource file's declaration. For example: 
+     - `assets/texts/config.yaml` : `assets/texts/config.yaml` 
+      - `lib/assets/texts/config.yaml`: `packages/flutter_r_demo/assets/texts/config.yaml`
+      
+   - `font_asset`: the font-type main resource file's declaration. For example: 
+   - `assets/fonts/Amiri/Amiri-Bold.ttf` : `assets/fonts/Amiri/Amiri-Bold.ttf` 
+      - `lib/assets/fonts/Amiri/Amiri-Bold.ttf`: `packages/flutter_r_demo/assets/fonts/Amiri/Amiri-Bold.ttf`
+
+   > Q: Why `image_asset` is different with `text_asset` and `font_asset`?
+   >
+   > A: Because up to now, flutter only support  `Image Asset variants`. To get more details, please see the below 《Flutter 中的`main asset`和`asset variant`》
+   >
+   > Q: How to generate `main_asset` with `resource_file`?
+   > A:  The simple algorithm is like below: 
+   >
+   >    1. covert the  `resource_file` to  `main_resource_file` if it's `variant_resource_file`
+   >
+   >    2. covert the  `main_resource_file` to  `main_relative_resource_file`
+   >
+   >    3. generate `asset_name` with `main_relative_resource_file`
+   >
+   >    4. generate `main_asset` with `asset_name` :
+   >
+   >       - `implied_relative_resource_file`: main_asset = "packages/#{package_name}/#{asset_name}"
+   >       - `non-implied_relative_resource_file`: main_asset = "#{asset_name}"
+   >
+   >       
+
+1. `asset_name`: The name of the`main_asset` from the set of asset resources to choose from. 
+
+   > Q: How to generate `asset_name` with `main_relative_resource_file` ?
+   >
+   > A: `main_relative_resource_file` remove the `lib/` (if it has), then you can get the `main_relative_resource_file` , for example:
+   >
+   >   - `assets/images/test.png`: `assets/images/test.png`
+   >
+   >   - `lib/assets/images/hot_foot_N.png`: `assets/images/hot_foot_N.png`
+   >
+   >     
+   >
+
+1. `asset_id`: the identity of `main_asset`  , which is usually `file_basename_no_extension` of  `main_asset`. 
+
+##### Font
 1. `font_family`: the family  of  `font_file`.
 1. `font_family_id`: the identity of `font_family` , which is usually  name of `font_family` .
 
@@ -69,7 +166,7 @@
 
    ```yaml
    flr:
-     core_version: 2.0.0
+     core_version: 3.0.0
      dartfmt_line_length: 80
      assets: []
      fonts: []
@@ -216,10 +313,12 @@ end
 ## 为资源文件生成`main asset`
 
 ```ruby
+# generate_main_asset(flutter_project_dir, package_name, legal_resource_file) -> main_asset
+#
 # 为当前资源文件生成 main_asset
 #
 # === Examples
-# flutter_dir = "~path/to/flutter_r_demo"
+# flutter_project_dir = "~/path/to/flutter_r_demo"
 # package_name = "flutter_r_demo"
 #
 # === Example-1
@@ -238,36 +337,58 @@ end
 # legal_resource_file = "~/path/to/flutter_r_demo/lib/assets/fonts/Amiri/Amiri-Regular.ttf"
 # main_asset = "packages/flutter_r_demo/fonts/Amiri/Amiri-Regular.ttf"
 #
-def self.generate_main_asset(flutter_dir, package_name, legal_resource_file)
-  #to get relative_legal_resource_file: lib/assets/images/3.0x/test.png
-  flutter_dir_prefix = "#{flutter_dir}/"
-  relative_legal_resource_file = legal_resource_file
-  if relative_legal_resource_file =~ /\A#{flutter_dir_prefix}/
-    relative_legal_resource_file["#{flutter_dir_prefix}"] = ""
-  end
-
-  # to get implied_relative_resource_file: assets/images/3.0x/test.png
-  lib_prefix = "lib/"
-  implied_relative_resource_file = relative_legal_resource_file;
-  if implied_relative_resource_file =~ /\A#{lib_prefix}/
-    implied_relative_resource_file[lib_prefix] = ""
-  end
-
-  # to get main_implied_relative_resource_file: assets/images/test.png
-  main_implied_relative_resource_file = implied_relative_resource_file
-  if is_asset_variant?(implied_relative_resource_file)
+# === Example-4
+# legal_resource_file = "~/path/to/flutter_r_demo/assets/images/test.png"
+# main_asset = "assets/images/test.png"
+#
+# === Example-5
+# legal_resource_file = "~/path/to/flutter_r_demo/assets/images/3.0x/test.png"
+# main_asset = "assets/images/test.png"
+#
+def self.generate_main_asset(flutter_project_dir, package_name, legal_resource_file)
+  # legal_resource_file: ~/path/to/flutter_r_demo/lib/assets/images/3.0x/test.png
+  # to get main_resource_file: ~/path/to/flutter_r_demo/lib/assets/images/test.png
+  main_resource_file = legal_resource_file
+  if is_asset_variant?(legal_resource_file)
     # test.png
-    file_basename = File.basename(implied_relative_resource_file)
-    # assets/images/3.0x
-    file_dir = File.dirname(implied_relative_resource_file)
-    # assets/images
-    main_implied_relative_resource_file_dir = File.dirname(file_dir)
-    # assets/images/test.png
-    main_implied_relative_resource_file = "#{main_implied_relative_resource_file_dir}/#{file_basename}"
+    file_basename = File.basename(legal_resource_file)
+    # ~/path/to/flutter_r_demo/lib/assets/images/3.0x
+    file_dir = File.dirname(legal_resource_file)
+    # ~/path/to/flutter_r_demo/lib/assets/images
+    main_resource_file_dir = File.dirname(file_dir)
+    # ~/path/to/flutter_r_demo/lib/assets/images/test.png
+    main_resource_file = main_resource_file_dir + "/" + file_basename
   end
 
-  main_asset = "packages/#{package_name}/#{main_implied_relative_resource_file}"
-  return main_asset
+  # main_resource_file:  ~/path/to/flutter_r_demo/lib/assets/images/test.png
+  # to get main_relative_resource_file: lib/assets/images/test.png
+  flutter_project_dir_prefix = "#{flutter_project_dir}/"
+  main_relative_resource_file = main_resource_file
+  if main_relative_resource_file =~ /\A#{flutter_project_dir_prefix}/
+    main_relative_resource_file["#{flutter_project_dir_prefix}"] = ""
+  end
+
+  # 判断 main_relative_resource_file 是不是 implied_resource_file 类型
+  # implied_resource_file 的定义是：放置在 "lib/" 目录内 resource_file
+  # 具体实现是：main_relative_resource_file 的前缀若是 "lib/" ，则其是 implied_resource_file 类型；
+  #
+  # implied_relative_resource_file 生成 main_asset 的算法是： main_asset = "packages/#{package_name}/#{asset_name}"
+  # non-implied_relative_resource_file 生成 main_asset 的算法是： main_asset = "#{asset_name}"
+  #
+  lib_prefix = "lib/"
+  if main_relative_resource_file =~ /\A#{lib_prefix}/
+    # main_relative_resource_file: lib/assets/images/test.png
+    # to get asset_name: assets/images/test.png
+    asset_name = main_relative_resource_file
+    asset_name[lib_prefix] = ""
+
+    main_asset = "packages/#{package_name}/#{asset_name}"
+    return main_asset
+  else
+    asset_name = main_relative_resource_file
+    main_asset = "#{asset_name}"
+    return main_asset
+  end
 end
 ```
 
@@ -737,9 +858,21 @@ flutter_project_root_dir
     class _R_Image_AssetResource {
       const _R_Image_AssetResource();
       
+      /* AssetResource属性代码需要根据flutter工程类型和资源类型生成：
+         1. 若资源是 implied_resource_file 类型，使用下面的A模板
+         2. 若资源是 non-implied_resource_file 类型，但flutter工程是Package类型，使用下面的A模板
+         3. 若都不符合1和2的条件，则使用下面的B模板
+      */
+      
+      /* A模板 */
       /// #{asset_comment}
       // ignore: non_constant_identifier_names
       final #{asset_id} = const AssetResource("#{escaped_asset_name}", packageName: R.package);
+      
+      /* B模板 */
+      /// #{asset_comment}
+      // ignore: non_constant_identifier_names
+      final #{asset_id} = const AssetResource("#{escaped_asset_name}", packageName: R.package); 
     }
     ```
 
@@ -750,9 +883,21 @@ flutter_project_root_dir
     class _R_Svg_AssetResource {
       const _R_Svg_AssetResource();
       
+      /* AssetResource属性代码需要根据flutter工程类型和资源类型生成：
+         1. 若资源是 implied_resource_file 类型，使用下面的A模板
+         2. 若资源是 non-implied_resource_file 类型，但flutter工程是Package类型，使用下面的A模板
+         3. 若都不符合1和2的条件，则使用下面的B模板
+      */
+      
+      /* A模板 */
       /// #{asset_comment}
       // ignore: non_constant_identifier_names
       final #{asset_id} = const AssetResource("#{escaped_asset_name}", packageName: R.package);
+      
+      /* B模板 */
+      /// #{asset_comment}
+      // ignore: non_constant_identifier_names
+      final #{asset_id} = const AssetResource("#{escaped_asset_name}", packageName: R.package); 
     }
     ```
 
@@ -763,9 +908,21 @@ flutter_project_root_dir
     class _R_Text_AssetResource {
       const _R_Text_AssetResource();
       
+      /* AssetResource属性代码需要根据flutter工程类型和资源类型生成：
+         1. 若资源是 implied_resource_file 类型，使用下面的A模板
+         2. 若资源是 non-implied_resource_file 类型，但flutter工程是Package类型，使用下面的A模板
+         3. 若都不符合1和2的条件，则使用下面的B模板
+      */
+      
+      /* A模板 */
       /// #{asset_comment}
       // ignore: non_constant_identifier_names
       final #{asset_id} = const AssetResource("#{escaped_asset_name}", packageName: R.package);
+      
+      /* B模板 */
+      /// #{asset_comment}
+      // ignore: non_constant_identifier_names
+      final #{asset_id} = const AssetResource("#{escaped_asset_name}", packageName: R.package); 
     }
     ```
 
