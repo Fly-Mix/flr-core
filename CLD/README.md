@@ -171,7 +171,7 @@
 
    ```yaml
    flr:
-     core_version: 3.0.0
+     core_version: 3.1.0
      dartfmt_line_length: 80
      assets: []
      fonts: []
@@ -669,18 +669,29 @@ flutter_project_root_dir
 
 `Flr`包括4个核心功能：
 
-- `init`: 初始化项目。
-- `generate`: 根据配置扫描资源目录，为合法的资源添加声明以及生成`r.g.dart`。
-- `start monitor`: 启动资源变化监控服务，以监控到有符合条件的资源变化时，调用`generate`功能。
+- `init`: 执行init_all操作，对主工程及其所有子工程进行init_one操作。
+- `generate`: 执行generate_all操作，对主工程及其所有子工程进行进行generate_one操作：根据配置扫描资源目录，为合法的资源添加声明以及生成`r.g.dart`。
+- `start monitor`: 启动资源变化监控服务，对主工程及其所有子工程进行监控，在监控到有符合条件的资源变化时，调用`generate`功能。
 - `stop monitor`: 停止资源变化监控服务。
 
-下面将会逐一列出这4个核心功能的核心逻辑。
+下面将会逐一列出这4个核心功能涉及的操作的核心逻辑。
 
-#### init
+#### init_all
 
 1. 进行环境检测；若发现不合法的环境，则抛出异常，终止当前进程。
 
-    - 检测当前flutter工程根目录是否存在`pubspec.yaml`。
+    - 检测当前flutter主工程根目录是否存在`pubspec.yaml`。
+
+1. 获取主工程和其所有子工程，对它们进行init_one操作。
+
+1. 调用flutter工具，为主工程和其所有子工程获取依赖。
+
+#### init_one
+
+1. 进行环境检测；若发现不合法的环境，则抛出异常，终止当前进程。
+
+    - 检测当前flutter工程根目录是否存在`pubspec.yaml`；
+    - 检测`pubspec.yaml`是否合法。
 
 1. 添加`flr_conig`和[r_dart_library](https://github.com/YK-Unit/r_dart_library)的依赖声明到`pubspec.yaml`。
 
@@ -706,9 +717,18 @@ flutter_project_root_dir
     - 检测Flutter配置中的`assets`选项是否是一个非空数组；若不是，则删除`assets`选项；
     - 检测Flutter配置中的`fonts`选项是否是一个非空数组；若不是，则删除`fonts`选项。
 
-1. 调用flutter工具，为flutter工程获取依赖。
+#### generate_all
 
-#### generate
+1. 进行环境检测；若发现不合法的环境，则抛出异常，终止当前进程。
+
+    - 检测当前flutter主工程根目录是否存在`pubspec.yaml`。
+
+1. 获取主工程和其所有子工程，对它们进行generate_one操作。
+
+1. 调用flutter工具，为主工程和其所有子工程获取依赖。
+
+
+#### generate_one
 
 1. 进行环境检测；若发现不合法的环境，则抛出异常，终止当前进程：
 
@@ -1039,9 +1059,7 @@ flutter_project_root_dir
 
 21. 调用flutter工具对`r.g.dart`进行格式化操作。
 
-22. 调用flutter工具，为flutter工程获取依赖。
-
-23. 判断警告日志数组是否为空，若不为空，输出所有警告日志。
+22. 判断警告日志数组是否为空，若不为空，输出所有警告日志。
 
 #### start monitor
 
@@ -1049,23 +1067,17 @@ flutter_project_root_dir
 
    - 检测当前flutter工程根目录是否存在`pubspec.yaml`。
 
-   - 检测当前`pubspec.yaml中`是否存在`flr_conig`。
+1. 对flutter工程进行合法资源目录检测；若不存在一个合法的资源目录，则抛出异常，终止当前进程：
 
-   - 检测当前`flr_config`中的`resource_dir`配置是否合法：
+   - 获取主工程的所有子工程根目录，生成工程根目录数组flutter_project_root_dir_array；
+   - 遍历flutter_project_root_dir_array，获取每个工程的legal_resource_dir数组；
+   - 检测legal_resource_dir数组是否为空，为空则结束运行。
 
-      判断合法的标准是：`assets`配置或者`fonts`配置了至少1个`legal_resource_dir`。
+1. 执行一次generate_all操作；
 
-2. 执行一次`flr generate`操作；
-
-3. 获取`legal_resource_dir`数组：
-
-   - 从`flr_config`中的`assets`配置获取`assets_legal_resource_dir`数组；
-   - 从`flr_config`中的`fonts`配置获取`fonts_legal_resource_dir`数组；
-   - 合并`assets_legal_resource_dir`数组和`fonts_legal_resource_dir`数组为`legal_resource_dir`数组。
-
-4. 启动资源变化监控服务；
+1. 启动资源变化监控服务；
    - 启动一个文件监控服务，对`legal_resource_dir`数组中的资源目录进行文件监控
-   - 若服务检测到资源变化（资源目录下的发生增/删/改文件），则执行一次`flr generate`操作
+   - 若服务检测到资源变化（资源目录下的发生增/删/改文件），则执行一次generate_all操作
 
 #### stop monitor
 
