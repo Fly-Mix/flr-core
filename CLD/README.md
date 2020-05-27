@@ -803,7 +803,8 @@ flutter_project_root_dir
 
 8. 为扫描得到的`legal_resource_file`添加资源声明到`pubspec.yaml`：
 
-   - 合并`image_asset`数组和`text_asset`数组为`asset`数组（`image_asset`数组元素在前）;
+   - 合并`image_asset`数组和`text_asset`数组为`new_asset_array`（`image_asset`数组元素在前）;
+   - 读取`pubspec.yaml`中`flutter-assets`配置，获得`old_asset_array`，然后和`new_asset_array`合并为`asset`数组；
    - 修改`pubspec.yaml`中`flutter-assets`配置的值为`asset`数组；
    - 修改`pubspec.yaml`中`flutter-fonts`配置的值为`font_family_config`数组。
 
