@@ -239,7 +239,7 @@ Flutter官方是通过一种名为`asset variant`（资产变体）的机制，�
 
 `main asset`相对于`asset variant`而言的，简单来说，它可视为一个资产资源的默认选择项。
 
-**需要特别注意的是：截止目前，Flutter官方只支持图片倍率变体。**也就是说一个图片资产，可以关联一个默认的图片资源文件和不同倍数分辨率的图片资源文件。（你期待的关联黑暗模式的图片资源文件，则需要静待官方支持了）
+**需要特别注意的是：截止目前，Flutter官方只支持图片倍率变体。** 也就是说一个图片资产，可以关联一个默认的图片资源文件和不同倍数分辨率的图片资源文件。（你期待的关联黑暗模式的图片资源文件，则需要静待官方支持了）
 
 那么如何判断应用程序目录里的一个资源文件是`main asset`还是`asset variant`呢？
 
@@ -936,7 +936,7 @@ flutter_project_root_dir
       /* B模板 */
       /// #{asset_comment}
       // ignore: non_constant_identifier_names
-      final #{asset_id} = const AssetResource("#{escaped_asset_name}", packageName: R.package); 
+      final #{asset_id} = const AssetResource("#{escaped_asset_name}", packageName: null); 
     }
     ```
 
@@ -961,7 +961,7 @@ flutter_project_root_dir
       /* B模板 */
       /// #{asset_comment}
       // ignore: non_constant_identifier_names
-      final #{asset_id} = const AssetResource("#{escaped_asset_name}", packageName: R.package); 
+      final #{asset_id} = const AssetResource("#{escaped_asset_name}", packageName: null); 
     }
     ```
 
@@ -986,7 +986,7 @@ flutter_project_root_dir
       /* B模板 */
       /// #{asset_comment}
       // ignore: non_constant_identifier_names
-      final #{asset_id} = const AssetResource("#{escaped_asset_name}", packageName: R.package); 
+      final #{asset_id} = const AssetResource("#{escaped_asset_name}", packageName: null); 
     }
     ```
 
